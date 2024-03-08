@@ -177,8 +177,8 @@ Esses efeitos combinados criam a dinâmica do jogo e podem ser utilizados estrat
     "name": "Espada da verdade",
     "description": "A lamina afiada dessa espada revela a verdade",
     "type": "ATK",
-    "actions": {
-        "attack": {
+    "actions": [
+        {
             "name": "Corte afiado",
             "description": "Este ataque causa 10 de dano, após cada ataque, compre uma carta",
             "cost": {
@@ -189,6 +189,6 @@ Esses efeitos combinados criam a dinâmica do jogo e podem ser utilizados estrat
                 "deal_damage": "10"
             }
         }
-    }
+    ]
 }
 ```

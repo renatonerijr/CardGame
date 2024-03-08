@@ -4,13 +4,13 @@
         "name": "Exodia",
         "description": "Este card juntado com outros 4 cards acaba o jogo",
         "type": "ATK",
-        "requirements": {},
-        "actions": {
-            "attack": {
+        "actions": [
+            {
                 "name": "Ataque bolado",
                 "description": "da 10 de dano",
                 "cost": {
                     "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
                     "after_shuffle": true,
                     "after_damage_self": true,
                     "after_damage_enemy": true,
@@ -26,6 +26,9 @@
                     "heal_self": "10"
                 }
             }
-        }
+        ],
+        "reaction": [
+            
+        ]
     }
 ]
