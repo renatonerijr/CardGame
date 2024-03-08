@@ -22,12 +22,11 @@ Type (Tipo): O tipo da carta, que pode incluir categorias como "ATK" (Ataque), "
     - KNOW (KNOWLEDGE: the theoretical or practical understanding of a subject)
 
 ```json
-    // Exemplo
     {
         "id": "tpdrVy",
         "name": "Exodia",
         "description": "Este card juntado com outros 4 cards acaba o jogo",
-        "type": "ATK", // Tipos válidos: ATK, DEF, ITEM, ENERGY
+        "type": "ATK",
     }
 ```
 
