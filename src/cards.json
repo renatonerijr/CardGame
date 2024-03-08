@@ -1,0 +1,31 @@
+[
+    {
+        "id": "tpdrVy",
+        "name": "Exodia",
+        "description": "Este card juntado com outros 4 cards acaba o jogo",
+        "type": "ATK",
+        "requirements": {},
+        "actions": {
+            "attack": {
+                "name": "Ataque bolado",
+                "description": "da 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "shuffle_card_enemy": true,
+                    "discard_card_enemy": true,
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        }
+    }
+]
