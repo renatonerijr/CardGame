@@ -50,5 +50,213 @@
                 }
             }
         ]
+    },
+    {
+        "id": "tpdrVy",
+        "name": "Exodia",
+        "description": "Este card juntado com outros 4 cards acaba o jogo",
+        "type": "ATK",
+        "requirements": {},
+        "reactions": {},
+        "actions": [
+            {
+                "name": "Ataque bolado",
+                "description": "da 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "discard_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ],
+        "reaction": [
+            {
+                "name": "Reação bolada",
+                "description": "a cada shuffle cura 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "shuffle_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ]
+    },
+    {
+        "id": "tpdrVy",
+        "name": "Exodia",
+        "description": "Este card juntado com outros 4 cards acaba o jogo",
+        "type": "ATK",
+        "requirements": {},
+        "reactions": {},
+        "actions": [
+            {
+                "name": "Ataque bolado",
+                "description": "da 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "discard_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ],
+        "reaction": [
+            {
+                "name": "Reação bolada",
+                "description": "a cada shuffle cura 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "shuffle_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ]
+    }
+    , {
+        "id": "tpdrVy",
+        "name": "Exodia",
+        "description": "Este card juntado com outros 4 cards acaba o jogo",
+        "type": "ATK",
+        "requirements": {},
+        "reactions": {},
+        "actions": [
+            {
+                "name": "Ataque bolado",
+                "description": "da 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "discard_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ],
+        "reaction": [
+            {
+                "name": "Reação bolada",
+                "description": "a cada shuffle cura 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "shuffle_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ]
+    },
+    {
+        "id": "tpdrVy",
+        "name": "Exodia",
+        "description": "Este card juntado com outros 4 cards acaba o jogo",
+        "type": "ATK",
+        "requirements": {},
+        "reactions": {},
+        "actions": [
+            {
+                "name": "Ataque bolado",
+                "description": "da 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "discard_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ],
+        "reaction": [
+            {
+                "name": "Reação bolada",
+                "description": "a cada shuffle cura 10 de dano",
+                "cost": {
+                    "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+                    "dice_roll": "ANY",
+                    "after_shuffle": true,
+                    "after_damage_self": true,
+                    "after_damage_enemy": true,
+                    "after_dice_roll": "ANY",
+                    "after_discarted_card": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2"
+                },
+                "effect": {
+                    "shuffle_card_enemy": "TYPE:MANA;ID:Rkn2hf;NAME:Exodia;QTY:2",
+                    "discard_card_self": true,
+                    "draw_card": "TYPE:MANA;QTY:2",
+                    "deal_damage": "10",
+                    "heal_self": "10"
+                }
+            }
+        ]
     }
 ]

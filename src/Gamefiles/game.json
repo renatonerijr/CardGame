@@ -1,14 +1,14 @@
 {
     "boards": {
         "center": [
-            {"name": "ATK BOARD", "size": 5, "type": "ATK", "id": "TvPzF8", "slots": []},
-            {"name": "DEF BOARD", "size": 5, "type": "DEF", "id": "ma5rgc", "slots": []}
+            {"name": "ATK BOARD", "size": 5, "side": "center", "type": "ATK", "id": "TvPzF8", "slots": []},
+            {"name": "DEF BOARD", "size": 5, "side": "center", "type": "DEF", "id": "ma5rgc", "slots": []}
         ],
         "left": [
-            {"name": "ITEM BOARD", "size": 3, "type": "ITEM", "id": "OoQTCg", "slots": []}
+            {"name": "ITEM BOARD", "size": 3, "side": "left", "type": "ITEM", "id": "OoQTCg", "slots": []}
         ],
         "right": [
-            {"name": "ITEM BOARD", "size": 3, "type": "ITEM", "id": "D5gtsp", "slots": []}
+            {"name": "ITEM BOARD", "size": 3, "side": "right", "type": "ITEM", "id": "D5gtsp", "slots": []}
         ]
     },
     "stages": [

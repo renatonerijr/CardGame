@@ -1,9 +1,10 @@
 import GameRules from '../Gamefiles/game.json'
 import { useGameContext } from '../Game/Game';
-import Card from '../Hand/Hand';
 import { useState } from 'react';
+import Card from '../Hand/Hand';
 
 interface BoardRow {
+    id: string
     name: string
     size: number
     type: string
@@ -11,30 +12,59 @@ interface BoardRow {
     slots: []
 }
 
+export const CardBoard = (props) => {
+    const item = props.row;
+
+    return (
+        <div
+            className="p-6 w-52 mx-0 h-72 bg-slate-400 rounded-xl shadow-lg flex flex-col"
+        >   
+            <div className='flex space-x-5 flex-row'>
+                <p className="text-left text-xs font-bold">
+                    ID:{item['id']}
+                </p>
+                <p className="text-right text-xs font-bold">
+                    TYPE:{item['type']}
+                </p>
+            </div>
+            <p className="text-center mt-2 text-2xl font-bold">
+                {item['name']}
+            </p>
+            <p className="text-center mt-5 text-xs font-bold">
+                {item['description']}
+            </p>
+        </div>
+    );
+};
 
 const BoardField = (row: BoardRow) => {
     row = row.row
     const { gameLogic } = useGameContext();
-    const { selectedCard } = gameLogic.selectedCard
-
-    const [rowList, setRowList ] = useState([])
 
     return (
-        <div className="flex flex-row justify-center space-x-5 m-2">
-            {
-                Array.from({ length: row.size }, (_, __) => (
-                    <>
-                        <div onClick={() => {gameLogic.placeCard("center", selectedCard)}} className="rounded-sm border-2 w-44 h-64 border-black">
-                        </div>
-                    </>
-                ))
-            }
+        <div>
+            <div className="flex flex-row justify-center space-x-5">{row.type}</div>
+            <div className="flex flex-row justify-center space-x-5 m-2">
+                {
+                    Array.from({ length: row.size }, (_, index) => (
+                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-sm border-2 w-52 h-72 border-black">
+                                {
+                                    row.slots[index] != undefined ? 
+                                    (   
+                                        <CardBoard row={row.slots[index]}></CardBoard>
+                                    ) : (<></>)
+                                }
+                            </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }
 
 const Board = ({ children }) => {
-
+    const { gameLogic } = useGameContext();
+    const { centerBoard, leftBoard, rightBoard} = gameLogic.boards
     return (
         <div className="h-2/3 w-100 ">
             <div className="flex flex-row">
@@ -43,21 +73,21 @@ const Board = ({ children }) => {
                 </div>
                 <div className="flex flex-col justify-center">
                     {
-                        GameRules.boards.left.map((row, index) => (
+                        leftBoard.map((row, index) => (
                             <BoardField key={row.id} row={row}></BoardField>
                         ))
                     }
                 </div>
-                <div className="flex flex-col flex-grow m-10">
+                <div className="flex flex-col flex-grow m-5">
                     {
-                        GameRules.boards.center.map((row, index) => (
+                        centerBoard.map((row, index) => (
                             <BoardField key={row.id} row={row}></BoardField>
                         ))
                     }
                 </div>
                 <div className="flex flex-col justify-center">
                     {
-                        GameRules.boards.right.map((row, index) => (
+                        rightBoard.map((row, index) => (
                             <BoardField key={row.id} row={row}></BoardField>
                         ))
                     }

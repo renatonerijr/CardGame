@@ -8,24 +8,15 @@ const GameContext = createContext<any>({});
 export const GameProvider = ({ children }) => {
     const [selectedCard, setSelectedCard] = useState({})
 
-    const [centerBoard, setCenterBoard] = useState([])
-    const [leftBoard, setLeftBoard] = useState([])
-    const [rightBoard, setRightBoard] = useState([])
+    const [centerBoard, setCenterBoard] = useState([...GameRules.boards.center])
+    const [leftBoard, setLeftBoard] = useState([...GameRules.boards.left])
+    const [rightBoard, setRightBoard] = useState([...GameRules.boards.right])
 
+    console.log(centerBoard)
+    
+    const [hand, setHand] = useState([]);
 
-    const [hand, setHand] = useState([
-        { suit: "♥", value: "A", onClick: () => {}, flipped: false },
-    ]);
-
-    const [deck, setDeck] = useState([
-        { suit: "♥", value: "W", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "O", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "R", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "K", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "I", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "N", onClick: () => {}, flipped: false },
-        { suit: "♥", value: "G", onClick: () => {}, flipped: false },
-    ]);
+    const [deck, setDeck] = useState([...AvailableCards]);
 
     const drawCard = () => {
         if (deck.length > 0) {
@@ -39,14 +30,36 @@ export const GameProvider = ({ children }) => {
         setDeck(deck.sort((_, __) => 0.5 - Math.random()))
     }
 
-    const placeCard = (board: object, card: object) => {
-        console.log(hand)
+    const placeCard = (board_row: object, index_row: number) => {
         if(hand.length <= 0) {
             throw Error('NO CARDS AT HAND')
         }
-        let elem = hand.findIndex((v) => { return v === card})
+
+        if (selectedCard.type != board_row.type) {
+            throw Error('BOARD NOT ALLOWED')
+        }
+
+        let elem = hand.findIndex((v) => { return v === selectedCard})
         const deleteByIndex = (arr, index) => arr.filter((_, i) => i !== index);
         setHand(deleteByIndex(hand, elem))
+
+
+
+        if (board_row.side == "center") {
+            let board_selected = centerBoard.findIndex((v) => {return v === board_row})
+            centerBoard[board_selected].slots[index_row] = selectedCard
+            setCenterBoard(centerBoard)
+        } 
+        if (board_row.side == "left") {
+            let board_selected = leftBoard.findIndex((v) => {return v === board_row})
+            leftBoard[board_selected].slots[index_row] = selectedCard
+            setLeftBoard(leftBoard)
+        }
+        if (board_row.side == "right") {
+            let board_selected = rightBoard.findIndex((v) => {return v === board_row})
+            rightBoard[board_selected].slots[index_row] = selectedCard
+            setRightBoard(rightBoard)
+        }
     }
 
     const gameLogic = {
@@ -62,9 +75,11 @@ export const GameProvider = ({ children }) => {
             selectedCard: selectedCard,
             setSelectedCard: setSelectedCard
         },
-        centerBoard: centerBoard,
-        leftBoard: leftBoard,
-        rightBoard: rightBoard,
+        boards: {
+            centerBoard: centerBoard,
+            leftBoard: leftBoard,
+            rightBoard: rightBoard,
+        },
         shuffleCards: shuffleCards,
         drawCard: drawCard,
         placeCard: placeCard
