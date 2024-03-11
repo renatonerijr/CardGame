@@ -2,14 +2,21 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Hand from './Hand/Hand.tsx'
 import Deck from './Deck/Deck.tsx'
+import Discard from './Discard/Discard.tsx'
+import Board from './Board/Board.tsx'
 import GameProvider from './Game/Game.tsx'
 import './main.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GameProvider>
-      <Hand />
-      <Deck />
+      <div className='w-screen h-screen'>
+          <Board>
+            <Discard />
+            <Deck />
+          </Board>
+          <Hand />
+      </div>
     </GameProvider>
   </React.StrictMode>,
 )

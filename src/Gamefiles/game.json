@@ -1,0 +1,20 @@
+{
+    "boards": {
+        "center": [
+            {"name": "ATK BOARD", "size": 5, "type": "ATK", "id": "TvPzF8", "slots": []},
+            {"name": "DEF BOARD", "size": 5, "type": "DEF", "id": "ma5rgc", "slots": []}
+        ],
+        "left": [
+            {"name": "ITEM BOARD", "size": 3, "type": "ITEM", "id": "OoQTCg", "slots": []}
+        ],
+        "right": [
+            {"name": "ITEM BOARD", "size": 3, "type": "ITEM", "id": "D5gtsp", "slots": []}
+        ]
+    },
+    "stages": [
+        {"name": "BUY STAGE", "effects": {"draw_card": true}},
+        {"name": "PLACE STAGE", "effects": {"place_cards": true}},
+        {"name": "ATTACK STAGE", "effects": {"use_actions": true}},
+        {"name": "REDIRECT ABILITIES", "effects": {"redirect_abilities": true}}
+    ]
+}

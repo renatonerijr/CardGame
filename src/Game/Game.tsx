@@ -1,11 +1,19 @@
 // Hand.js
 import { createContext, useContext, useState } from "react";
-
+import AvailableCards from '../Gamefiles/cards.json';
+import GameRules from '../Gamefiles/game.json';
 const GameContext = createContext<any>({});
 
 
 export const GameProvider = ({ children }) => {
-    const [hand, setHand] = useState<any[]>([
+    const [selectedCard, setSelectedCard] = useState({})
+
+    const [centerBoard, setCenterBoard] = useState([])
+    const [leftBoard, setLeftBoard] = useState([])
+    const [rightBoard, setRightBoard] = useState([])
+
+
+    const [hand, setHand] = useState([
         { suit: "♥", value: "A", onClick: () => {}, flipped: false },
     ]);
 
@@ -31,6 +39,16 @@ export const GameProvider = ({ children }) => {
         setDeck(deck.sort((_, __) => 0.5 - Math.random()))
     }
 
+    const placeCard = (board: object, card: object) => {
+        console.log(hand)
+        if(hand.length <= 0) {
+            throw Error('NO CARDS AT HAND')
+        }
+        let elem = hand.findIndex((v) => { return v === card})
+        const deleteByIndex = (arr, index) => arr.filter((_, i) => i !== index);
+        setHand(deleteByIndex(hand, elem))
+    }
+
     const gameLogic = {
         hand: {
             hand: hand, 
@@ -40,8 +58,16 @@ export const GameProvider = ({ children }) => {
             deck: deck, 
             setDeck: setDeck
         },
+        selectedCard: {
+            selectedCard: selectedCard,
+            setSelectedCard: setSelectedCard
+        },
+        centerBoard: centerBoard,
+        leftBoard: leftBoard,
+        rightBoard: rightBoard,
         shuffleCards: shuffleCards,
-        drawCard: drawCard
+        drawCard: drawCard,
+        placeCard: placeCard
     }
 
 

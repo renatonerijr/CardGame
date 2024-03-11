@@ -9,7 +9,6 @@ const Card = (props) => {
         <div
             className="p-6 w-44 mx-0 h-64 bg-slate-400 rounded-xl shadow-lg flex items-center"
             style={{ transform: `rotate(${props.rotation}deg)` }} // Apply rotation here
-            onClick={item.onClick}
         >
             <p className="text-center text-2xl font-bold">
                 {item.suit === "♥" || props.suit === "♦" ? (
@@ -26,15 +25,15 @@ const Card = (props) => {
 const Hand = () => {
     const { gameLogic } = useGameContext();
     const { hand } = gameLogic.hand;
-    console.log(hand)
+    const {selectedCard, setSelectedCard } = gameLogic.selectedCard
     return (
-        <div className="container mx-auto absolute bottom-0 right-0 left-0">
-            <div className="flex justify-center items-end relative">
-                <div className="absolute bottom-0 m-0 left-0 right-0 flex justify-center">
+        <div className="h-1/3 w-100">
+            <div className="flex space-x-2 justify-center items-end">
                     {hand.map((item, index) => (
-                        <Card key={index} item={item}/>
+                        <div onClick={() => {setSelectedCard(item)}} className={selectedCard == item ? "bg-black" : ""}>
+                            <Card key={index} item={item}/>
+                        </div>
                     ))}
-                </div>
             </div>
         </div>
     );
