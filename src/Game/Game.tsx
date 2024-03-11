@@ -6,6 +6,7 @@ const GameContext = createContext<any>({});
 
 
 export const GameProvider = ({ children }) => {
+    const [eventList, setEventList] = useState([])
     const [selectedCard, setSelectedCard] = useState({})
 
     const [centerBoard, setCenterBoard] = useState([...GameRules.boards.center])
@@ -19,7 +20,10 @@ export const GameProvider = ({ children }) => {
 
     const [life, setLife] = useState(20)
 
+    console.log(eventList)
+
     const drawCard = () => {
+        addToEventList({"type": "draw_card"})
         if (deck.length > 0) {
             let cardDraw = deck.shift()
             setDeck([...deck])
@@ -28,10 +32,12 @@ export const GameProvider = ({ children }) => {
     }
 
     const shuffleCards = () => {
+        addToEventList({"type": "shuffle_deck"})
         setDeck(deck.sort((_, __) => 0.5 - Math.random()))
     }
 
     const placeCard = (board_row: object, index_row: number) => {
+
         if(hand.length <= 0) {
             throw Error('NO CARDS AT HAND')
         }
@@ -58,12 +64,13 @@ export const GameProvider = ({ children }) => {
         const deleteByIndex = (arr, index) => arr.filter((_, i) => i !== index);
         setHand(deleteByIndex(hand, elem))
 
-
         if (selectedCard.type == "ENERGY") {
             if (board_row.side == "center") {
                 card_in_board['energy_slot'] = [...card_in_board['energy_slot'], selectedCard]
                 centerBoard[board_selected].slots[index_row] = card_in_board
                 setCenterBoard(centerBoard)
+                setSelectedCard({})
+                addToEventList({"type": "place_card"})
             }
             return true
         }
@@ -83,17 +90,33 @@ export const GameProvider = ({ children }) => {
             rightBoard[board_selected].slots[index_row] = selectedCard
             setRightBoard(rightBoard)
         }
+        setSelectedCard({})
+        addToEventList({"type": "place_card"})
     }
 
     const addLife = (ad_life: number) => {
+        addToEventList({"type": "add_life"})
         setLife(life + ad_life)
     }
 
     const removeLife = (rem_life: number) => {
+        addToEventList({"type": "remove_life"})
         setLife(life - rem_life)
     }
 
-    const gameLogic = {
+    const setToEventList = (index) => {
+        let gmlogic = JSON.parse(eventList[index]['gameLogic'])
+        setDeck(gmlogic['deck']['deck'])
+        setHand(gmlogic['hand']['hand'])
+        setLife(gmlogic['life']['life'])
+        setSelectedCard(gmlogic['selectedCard']['selectedCard'])
+        console.log(gmlogic['boards']['centerBoard'])
+        setCenterBoard([...gmlogic['boards']['centerBoard']])
+        setLeftBoard([...gmlogic['boards']['leftBoard']])
+        setRightBoard([...gmlogic['boards']['rightBoard']])
+    }
+
+    let gameLogic = {
         hand: {
             hand: hand, 
             setHand: setHand
@@ -120,8 +143,20 @@ export const GameProvider = ({ children }) => {
         },
         shuffleCards: shuffleCards,
         drawCard: drawCard,
-        placeCard: placeCard
+        placeCard: placeCard,
+        setToEventList: setToEventList
     }
+
+    const addToEventList = (eventObject) => {
+        let deepCopy = JSON.stringify(gameLogic)
+        setEventList(
+            [
+                ...eventList, 
+                {...eventObject, "gameLogic": deepCopy}
+            ]
+        )
+    }
+
 
 
     return (

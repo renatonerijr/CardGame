@@ -26,11 +26,19 @@
         ]
     },
     {
+        "id": "FjV2G6",
+        "name": "PYROMANCER ENERGY",
+        "description": "🔥",
+        "type": "ENERGY",
+        "archetype": "PYRO"
+    },
+    {
         "id": "tpdrVy",
         "name": "Exodia",
         "description": "Este card juntado com outros 4 cards acaba o jogo",
         "type": "ATK",
         "archetype": "PYRO",
+        "energy_slot": [],
         "requirements": {},
         "reactions": {},
         "actions": [
@@ -50,7 +58,6 @@
             }
         ]
     },
-    
     {
         "id": "FjV2G6",
         "name": "PYROMANCER ENERGY",
