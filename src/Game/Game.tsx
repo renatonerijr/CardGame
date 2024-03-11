@@ -15,6 +15,9 @@ export const GameProvider = ({ children }) => {
     const [hand, setHand] = useState([]);
 
     const [deck, setDeck] = useState([...AvailableCards]);
+    const [deckViewer, setDeckViewer] = useState(false)
+
+    const [life, setLife] = useState(20)
 
     const drawCard = () => {
         if (deck.length > 0) {
@@ -33,8 +36,22 @@ export const GameProvider = ({ children }) => {
             throw Error('NO CARDS AT HAND')
         }
 
-        if (selectedCard.type != board_row.type) {
+        if (selectedCard.type != board_row.type && selectedCard.type != "ENERGY") {
             throw Error('BOARD NOT ALLOWED')
+        }
+
+        if (board_row.slots[index_row] && selectedCard.type != "ENERGY"){
+            throw Error('CARD ALREADY ON BOARD')
+        }
+
+        if (selectedCard.type == "ENERGY" && board_row.side != "center") {
+            throw Error('ENERGY CARD CANNOT BE APPLIED TO SIDE BOARDS')
+        }
+        let board_selected = centerBoard.findIndex((v) => {return v === board_row})
+        let card_in_board = centerBoard[board_selected].slots[index_row]
+        
+        if (card_in_board == undefined && selectedCard.type == "ENERGY") {
+            throw Error("Can't apply energy on none card")
         }
 
         let elem = hand.findIndex((v) => { return v === selectedCard})
@@ -42,6 +59,14 @@ export const GameProvider = ({ children }) => {
         setHand(deleteByIndex(hand, elem))
 
 
+        if (selectedCard.type == "ENERGY") {
+            if (board_row.side == "center") {
+                card_in_board['energy_slot'] = [...card_in_board['energy_slot'], selectedCard]
+                centerBoard[board_selected].slots[index_row] = card_in_board
+                setCenterBoard(centerBoard)
+            }
+            return true
+        }
 
         if (board_row.side == "center") {
             let board_selected = centerBoard.findIndex((v) => {return v === board_row})
@@ -60,6 +85,14 @@ export const GameProvider = ({ children }) => {
         }
     }
 
+    const addLife = (ad_life: number) => {
+        setLife(life + ad_life)
+    }
+
+    const removeLife = (rem_life: number) => {
+        setLife(life - rem_life)
+    }
+
     const gameLogic = {
         hand: {
             hand: hand, 
@@ -67,11 +100,18 @@ export const GameProvider = ({ children }) => {
         },
         deck: {
             deck: deck, 
-            setDeck: setDeck
+            setDeck: setDeck,
+            deckViewer: deckViewer,
+            setDeckViewer: setDeckViewer
         },
         selectedCard: {
             selectedCard: selectedCard,
             setSelectedCard: setSelectedCard
+        },
+        life: {
+            life: life,
+            addLife: addLife,
+            removeLife: removeLife
         },
         boards: {
             centerBoard: centerBoard,

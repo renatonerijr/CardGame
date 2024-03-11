@@ -14,7 +14,6 @@ interface BoardRow {
 
 export const CardBoard = (props) => {
     const item = props.row;
-
     return (
         <div
             className="p-6 w-52 mx-0 h-72 bg-slate-400 rounded-xl shadow-lg flex flex-col"
@@ -33,6 +32,17 @@ export const CardBoard = (props) => {
             <p className="text-center mt-5 text-xs font-bold">
                 {item['description']}
             </p>
+            <div className="flex flex-row space-x-1 mt-5 text-xs font-bold">
+                <p>ENERGY SLOTS: </p>
+                {
+                item['energy_slot'] != undefined ? 
+                    item['energy_slot'].map((value) => (
+                        <p>{value['description']}</p>
+                    ))
+                    :
+                    <></>
+                }
+            </div>
         </div>
     );
 };
@@ -47,11 +57,11 @@ const BoardField = (row: BoardRow) => {
             <div className="flex flex-row justify-center space-x-5 m-2">
                 {
                     Array.from({ length: row.size }, (_, index) => (
-                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-sm border-2 w-52 h-72 border-black">
+                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-xl border-2 w-52 h-72 border-black">
                                 {
                                     row.slots[index] != undefined ? 
                                     (   
-                                        <CardBoard row={row.slots[index]}></CardBoard>
+                                        <CardBoard key={row.slots[index]["id"] + index} row={row.slots[index]}></CardBoard>
                                     ) : (<></>)
                                 }
                             </div>

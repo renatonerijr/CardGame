@@ -1,5 +1,12 @@
 # ACTIONS / REACTIONS
 
+
+[
+    - After round 
+    - Multiplicador de dano
+    - Ações no cemitério
+]
+
 As ações ou reações são eventos ou habilidades que os jogadores podem usar durante o jogo para influenciar o resultado das partidas. Cada ação possui um nome único, uma descrição que explica o que ela faz e um conjunto de condições de custo que devem ser cumpridas antes que a ação possa ser ativada. As condições de custo podem incluir a necessidade de possuir cartas específicas, a ocorrência de eventos como embaralhar o baralho ou descartar cartas, ou até mesmo o resultado de rolagens de dados. Essas condições garantem que as ações sejam usadas estrategicamente, adicionando uma camada adicional de complexidade e escolha tática ao jogo.
 
 A diferença entre actions e reactions é que reactions ocorre automaticamente quando o custo de executar dela é cumprido.
@@ -50,7 +57,7 @@ Esses efeitos combinados criam a dinâmica do jogo e podem ser utilizados estrat
                 "after_roll_dice": 6
             },
             "effect": {
-                "deal_damage": "10"
+                "negate_damage": true
             }
         }
     ]
@@ -64,6 +71,7 @@ Custo (cost): O custo necessário para usar a ação. Este é um elemento crucia
     card_placed: Uma ou mais cartas que devem ser pagas como custo para usar a ação, devem ser separados por ponto e virgula e Aqui estão os detalhes específicos do custo da carta:
 
         - TYPE: O tipo da carta necessária para o custo.
+        - ARCH: O tipo de archtype
         - ID: O identificador único da carta necessária.
         - PLACED: A localização da carta necessária.
             - HAND
@@ -83,6 +91,7 @@ Custo (cost): O custo necessário para usar a ação. Este é um elemento crucia
     card_draw: Uma ou mais cartas que devem ser sacadas como custo para usar a ação, devem ser separados por ponto e virgula e Aqui estão os detalhes específicos do custo da carta:
 
         - TYPE: O tipo da carta necessária para o custo.
+        - ARCH: O tipo de archtype
         - ID: O identificador único da carta necessária.
         - PLACED: A localização da carta necessária.
             - HAND
@@ -111,11 +120,16 @@ Custo (cost): O custo necessário para usar a ação. Este é um elemento crucia
         - "ANY" // Qualquer valor
         - 4,5,6  // 4,5,6
 
+    after_round_end: Um indicador que especifica que a ação só pode ser usada após o round terminar.
+
+    after_round: Um indicador que especifica que a ação só pode ser usada após o round.
+
     
 ----
     after_discarted_card: Uma carta que deve ser destruída como custo para usar a ação. Devem ser separados por ponto e virgula e aqui estão os detalhes específicos do custo da carta:
 
         TYPE: O tipo da carta a ser destruída.
+        ARCH: O archtype a ser destruido
         ID: O identificador único da carta a ser destruída.
         NAME: O nome da carta a ser destruída.
         QTY: A quantidade de cartas a serem destruídas.
@@ -139,6 +153,7 @@ O efeito do ataque descreve as ações resultantes quando um jogador ativa uma a
     Aqui estão os detalhes específicos:
 
         - TYPE: O tipo da carta necessária para o custo.
+        - ARCH: O archtype da carta necessária para o custo.
         - ID: O identificador único da carta necessária.
         - PLACED: A localização da carta necessária.
             - HAND
@@ -162,6 +177,7 @@ O efeito do ataque descreve as ações resultantes quando um jogador ativa uma a
     Aqui estão os detalhes específicos:
 
         - TYPE: O tipo da carta necessária para o custo.
+        - ARCH: O archtype da carta necessária para o custo.
         - ID: O identificador único da carta necessária.
         - PLACED: A localização da carta necessária.
             - HAND
@@ -186,6 +202,7 @@ O efeito do ataque descreve as ações resultantes quando um jogador ativa uma a
     Aqui estão os detalhes específicos:
 
         - TYPE: O tipo da carta necessária para o custo.
+        - ARCH: O archtype da carta necessária para o custo.
         - ID: O identificador único da carta necessária.
         - PLACED: A localização da carta necessária.
             - HAND
@@ -208,4 +225,37 @@ O efeito do ataque descreve as ações resultantes quando um jogador ativa uma a
 
     heal_self: Indica a quantidade de pontos de vida que o jogador recupera após o ataque. Por exemplo, "10" significa que o jogador se cura em 10 pontos de vida.
 
-    negate_damage: Indica que o jogador nega o dano completamente de qualquer ataque
+    negate_damage: Indicador booleano que indica que o jogador nega o dano completamente de qualquer ataque naquele round.
+
+    decrease_damage_enemy: Um indicado de quanto o dano inimigo deve ser reduzido, Por exemplo, "10" significa que o ataque causa 10 pontos de dano.
+
+    increase_damage_enemy: Um indicado de quanto o dano inimigo deve aumentado, Por exemplo, "10" significa que o ataque causa 10 pontos de dano.
+
+---
+
+    on_cemitery: Um indicador com filtro do cemitério que após realisar o filtro executa o numero de vezes os objetos encontrados no filtro as ações descritas:
+
+    - TYPE: O tipo da carta necessária para o custo.
+    - ARCH: O archtype da carta necessária para o custo.
+    - ID: O identificador único da carta necessária.
+    - PLACED: A localização da carta necessária.
+        - HAND
+        - DECK
+        - TABLE
+    - CHOOSE: Se o usuário pode escolher qual quarta comprar // true or false
+    - NAME: O nome da carta necessária.
+    - QTY: A quantidade de cartas necessárias.
+    Exemplo:
+```json
+{
+    "effect": {
+        "on_cemitery": {
+            "filter": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;CHOOSE:false;QTY:2",
+            "actions": [
+                "decrease_damage_enemy": "2"
+            ]
+        }
+    }
+}
+```
+     
