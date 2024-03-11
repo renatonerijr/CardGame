@@ -1,49 +1,67 @@
-# Como criar carta
+# ACTIONS / REACTIONS
 
-Para criar uma carta no seu TCG, é essencial considerar diversos atributos que definirão as características e funcionalidades da carta. Abaixo estão alguns atributos básicos (requiridos) que você pode incluir no arquivo cards.json para cada carta:
+As ações ou reações são eventos ou habilidades que os jogadores podem usar durante o jogo para influenciar o resultado das partidas. Cada ação possui um nome único, uma descrição que explica o que ela faz e um conjunto de condições de custo que devem ser cumpridas antes que a ação possa ser ativada. As condições de custo podem incluir a necessidade de possuir cartas específicas, a ocorrência de eventos como embaralhar o baralho ou descartar cartas, ou até mesmo o resultado de rolagens de dados. Essas condições garantem que as ações sejam usadas estrategicamente, adicionando uma camada adicional de complexidade e escolha tática ao jogo.
 
----
-
-ID: Um identificador único para a carta. Isso permite que o jogo identifique cada carta de forma exclusiva. Certifique-se de que cada ID seja único entre todas as cartas do jogo. * Usar extensão NanoID do VSCode para gerar novos ID's
-
-Name (Nome): O nome da carta. Escolha um nome descritivo que represente a carta de forma clara e concisa.
-
-Description (Descrição): Uma descrição que detalha as habilidades, efeitos ou características da carta. Esta descrição é útil para os jogadores entenderem como a carta funciona e como ela pode afetar o jogo.
-
-Type (Tipo): O tipo da carta, que pode incluir categorias como "ATK" (Ataque), "DEF" (Defesa), "ITEM" (Item), entre outros, O tipo da carta pode determinar suas funcionalidades e como ela pode ser utilizada durante o jogo.
-
-    TIPOS POSSIVEIS (TEMP, PODE SER CUSTOMIZADO):
-    - ATK
-    - DEF
-    - ITEM
-    - MANA (MANA: pervasive supernatural or magical power)
-    - DEX (DEXTERITY: skill in performing tasks, especially with the hands.)
-    - AGI (AGILITY: ability to move quickly and easily.)
-    - KNOW (KNOWLEDGE: the theoretical or practical understanding of a subject)
-
-```json
-    {
-        "id": "tpdrVy",
-        "name": "Exodia",
-        "description": "Este card juntado com outros 4 cards acaba o jogo",
-        "type": "ATK",
-    }
-```
-
-
-# ACTIONS
-
-As ações são eventos ou habilidades que os jogadores podem usar durante o jogo para influenciar o resultado das partidas. Cada ação possui um nome único, uma descrição que explica o que ela faz e um conjunto de condições de custo que devem ser cumpridas antes que a ação possa ser ativada. As condições de custo podem incluir a necessidade de possuir cartas específicas, a ocorrência de eventos como embaralhar o baralho ou descartar cartas, ou até mesmo o resultado de rolagens de dados. Essas condições garantem que as ações sejam usadas estrategicamente, adicionando uma camada adicional de complexidade e escolha tática ao jogo.
+A diferença entre actions e reactions é que reactions ocorre automaticamente quando o custo de executar dela é cumprido.
 
 - Nome (name): O nome da ação. Isso identifica a ação de forma clara e concisa para os jogadores.
 
 - Descrição (description): Uma descrição que detalha o efeito ou propósito da ação. Isso ajuda os jogadores a entenderem o que a ação faz no jogo.
 
-## Cost
+- Tipo (type): Especifica em qual campo a carta deve ser jogado. Valores: ATK, DEF, ITEM
+
+- Hide: Se a ação deve ser escondida do player para ações em cadeia.
+
+Esses efeitos combinados criam a dinâmica do jogo e podem ser utilizados estrategicamente pelos jogadores para alcançar a vitória, aqui está um exemplo de carta que pode ser criada:
+```json
+{
+    "id": "X6MLeo",
+    "name": "Espada da verdade",
+    "description": "A lamina afiada dessa espada revela a verdade",
+    "type": "ATK",
+    "actions": [
+        {
+            "name": "Corte afiado",
+            "description": "Este ataque causa 10 de dano, após cada ataque, compre uma carta",
+            "cost": {
+                "card": "TYPE:DEX;QTY:1"
+            },
+            "effect": {
+                "draw_card": "QTY:1",
+                "deal_damage": "10"
+            }
+        }
+    ],
+    "reaction": [
+        {
+            "name": "Contra golpe roll",
+            "hide": true,
+            "cost": {
+                "after_damage_self": true
+            },
+            "effect": {
+                "roll_dice": "QTY:1",
+        },
+        {
+            "name": "Contra golpe",
+            "description": "Quando oponente ataca, rola um dado caso dê 6, o golpe não tem efeito",
+            "cost": {
+                "after_damage_self": true,
+                "after_roll_dice": 6
+            },
+            "effect": {
+                "deal_damage": "10"
+            }
+        }
+    ]
+}
+```
+
+# Cost
 
 Custo (cost): O custo necessário para usar a ação. Este é um elemento crucial, pois impõe limitações ao uso da ação e adiciona estratégia ao jogo. O custo pode ser customizado de várias maneiras:
 
-    card: Uma ou mais cartas que devem ser pagas como custo para usar a ação, devem ser separados por ponto e virgula e Aqui estão os detalhes específicos do custo da carta:
+    card_placed: Uma ou mais cartas que devem ser pagas como custo para usar a ação, devem ser separados por ponto e virgula e Aqui estão os detalhes específicos do custo da carta:
 
         - TYPE: O tipo da carta necessária para o custo.
         - ID: O identificador único da carta necessária.
@@ -58,10 +76,30 @@ Custo (cost): O custo necessário para usar a ação. Este é um elemento crucia
 ```json
 {
     "cost": {
-        "card": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+        "card_placed": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
     }
 }
 ```
+    card_draw: Uma ou mais cartas que devem ser sacadas como custo para usar a ação, devem ser separados por ponto e virgula e Aqui estão os detalhes específicos do custo da carta:
+
+        - TYPE: O tipo da carta necessária para o custo.
+        - ID: O identificador único da carta necessária.
+        - PLACED: A localização da carta necessária.
+            - HAND
+            - DECK
+            - TABLE
+        - NAME: O nome da carta necessária.
+        - QTY: A quantidade de cartas necessárias.
+        
+    Exemplo:
+```json
+{
+    "cost": {
+        "card_draw": "TYPE:MANA;ID:Rkn2hf;PLACED:hand,NAME:Exodia;QTY:2",
+    }
+}
+```
+
     after_shuffle: Um indicador booleano que especifica que a ação só pode ser usada após o jogador embaralhar o baralho. Isso pode adicionar uma dinâmica estratégica interessante ao jogo.
 
     after_damage_self: Um indicador booleano que especifica que a ação só pode ser usada após o jogador receber dano.
@@ -170,25 +208,4 @@ O efeito do ataque descreve as ações resultantes quando um jogador ativa uma a
 
     heal_self: Indica a quantidade de pontos de vida que o jogador recupera após o ataque. Por exemplo, "10" significa que o jogador se cura em 10 pontos de vida.
 
-Esses efeitos combinados criam a dinâmica do jogo e podem ser utilizados estrategicamente pelos jogadores para alcançar a vitória, aqui está um exemplo de carta que pode ser criada:
-```json
-{
-    "id": "X6MLeo",
-    "name": "Espada da verdade",
-    "description": "A lamina afiada dessa espada revela a verdade",
-    "type": "ATK",
-    "actions": [
-        {
-            "name": "Corte afiado",
-            "description": "Este ataque causa 10 de dano, após cada ataque, compre uma carta",
-            "cost": {
-                "card": "TYPE:DEX;QTY:1"
-            },
-            "effect": {
-                "draw_card": "QTY:1",
-                "deal_damage": "10"
-            }
-        }
-    ]
-}
-```
+    negate_damage: Indica que o jogador nega o dano completamente de qualquer ataque

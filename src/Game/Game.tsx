@@ -12,8 +12,6 @@ export const GameProvider = ({ children }) => {
     const [leftBoard, setLeftBoard] = useState([...GameRules.boards.left])
     const [rightBoard, setRightBoard] = useState([...GameRules.boards.right])
 
-    console.log(centerBoard)
-    
     const [hand, setHand] = useState([]);
 
     const [deck, setDeck] = useState([...AvailableCards]);
