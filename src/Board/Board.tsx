@@ -7,6 +7,7 @@ interface BoardRow {
     id: string
     name: string
     size: number
+    side: string
     type: string
     style: string
     slots: []
@@ -16,9 +17,9 @@ export const CardBoard = (props) => {
     const item = props.row;
     return (
         <div
-            className="p-6 w-52 mx-0 h-72 bg-slate-400 rounded-xl shadow-lg flex flex-col"
+            className="p-6 w-44 h-64 mx-0 bg-slate-400 rounded-xl shadow-lg flex flex-col"
         >   
-            <div className='flex space-x-5 flex-row'>
+            <div className='flex space-x-2 flex-row'>
                 <p className="text-left text-xs font-bold">
                     ID:{item['id']}
                 </p>
@@ -26,7 +27,7 @@ export const CardBoard = (props) => {
                     TYPE:{item['type']}
                 </p>
             </div>
-            <p className="text-center mt-2 text-2xl font-bold">
+            <p className="text-center mt-2 text-xl font-bold">
                 {item['name']}
             </p>
             <p className="text-center mt-5 text-xs font-bold">
@@ -49,15 +50,18 @@ export const CardBoard = (props) => {
 
 const BoardField = (row: BoardRow) => {
     row = row.row
-    const { gameLogic } = useGameContext();
+    console.log(row.side)
 
+    const { gameLogic } = useGameContext();
+    let rowSide = row.side != "center" ? "flex-col" : "flex-row"
+    let rowCSS = "flex justify-center space-x-0 m-2 " +  rowSide
     return (
         <div>
-            <div className="flex flex-row justify-center space-x-5">{row.type}</div>
-            <div className="flex flex-row justify-center space-x-5 m-2">
+            <div className="flex">{row.type}</div>
+            <div className={rowCSS}>
                 {
                     Array.from({ length: row.size }, (_, index) => (
-                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-xl border-2 w-52 h-72 border-black">
+                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-xl border-2 w-44 h-64 border-black">
                                 {
                                     row.slots[index] != undefined ? 
                                     (   
@@ -74,37 +78,40 @@ const BoardField = (row: BoardRow) => {
 
 const Board = ({ children }) => {
     const { gameLogic } = useGameContext();
-    const { centerBoard, leftBoard, rightBoard} = gameLogic.boards
+    const { centerBoard, leftBoard, rightBoard} = gameLogic.boards;
+    
     return (
         <div className="h-2/3 w-100 ">
-            <div className="flex flex-row">
+
+            <div className="flex justify-center flex-row">
                 <div className="flex flex-col m-2 space-y-10">
                     {children}
                 </div>
-                <div className="flex flex-col justify-center">
-                    {
-                        leftBoard.map((row, index) => (
-                            <BoardField key={row.id} row={row}></BoardField>
-                        ))
-                    }
+                <div className="flex flex-col flex-grow m-5">
+                        {
+                            leftBoard.map((row, index) => (
+                                <BoardField key={row.id} row={row}></BoardField>
+                            ))
+                        }
                 </div>
                 <div className="flex flex-col flex-grow m-5">
-                    {
-                        centerBoard.map((row, index) => (
-                            <BoardField key={row.id} row={row}></BoardField>
-                        ))
-                    }
+                        {
+                            centerBoard.map((row, index) => (
+                                <BoardField key={row.id} row={row}></BoardField>
+                            ))
+                        }
                 </div>
-                <div className="flex flex-col justify-center">
-                    {
-                        rightBoard.map((row, index) => (
-                            <BoardField key={row.id} row={row}></BoardField>
-                        ))
-                    }
+                <div className="flex flex-grow m-5">
+                        {
+                            rightBoard.map((row, index) => (
+                                <BoardField key={row.id} row={row}></BoardField>
+                            ))
+                        }
                 </div>
             </div>
         </div>
     )
 }
+
 
 export default Board

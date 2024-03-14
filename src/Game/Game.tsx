@@ -1,4 +1,3 @@
-// Hand.js
 import { createContext, useContext, useEffect, useState } from "react";
 import { flushSync } from 'react-dom';
 import AvailableCards from '../Gamefiles/cards.json';
@@ -131,16 +130,17 @@ export const GameProvider = ({ children }) => {
         if (selectedCard.type == "ENERGY" && board_row.side != "center") {
             throw Error('ENERGY CARD CANNOT BE APPLIED TO SIDE BOARDS')
         }
-        let board_selected = centerBoard.findIndex((v) => {return v === board_row})
-        let card_in_board = centerBoard[board_selected].slots[index_row]
-
-        if (card_in_board == undefined && selectedCard.type == "ENERGY") {
-            throw Error("Can't apply energy on none card")
-        }
 
         let elem = hand.findIndex((v) => { return v === selectedCard})
 
         if (selectedCard.type == "ENERGY") {
+            let board_selected = centerBoard.findIndex((v) => {return v === board_row})
+            let card_in_board = centerBoard[board_selected].slots[index_row]
+    
+            if (card_in_board == undefined && selectedCard.type == "ENERGY") {
+                throw Error("Can't apply energy on none card")
+            }
+    
             if (board_row.side == "center") {
                 console.log(centerBoard)
                 addToEventList({"type": "place_energy", "center_board": centerBoard, "board_selected": board_selected, "card_in_board": card_in_board, "index_row": index_row, "selected_card": elem})
