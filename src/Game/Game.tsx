@@ -15,8 +15,9 @@ export const GameProvider = ({ children }) => {
     const [rightBoard, setRightBoard] = useState([...GameRules.boards.right])
 
     const [hand, setHand] = useState([]);
+    const activeDeckParsed = JSON.parse(sessionStorage.getItem("active_deck"))
+    const [deck, setDeck] = useState(activeDeckParsed);
 
-    const [deck, setDeck] = useState([...AvailableCards]);
     const [deckViewer, setDeckViewer] = useState(false)
 
     const [life, setLife] = useState(20)

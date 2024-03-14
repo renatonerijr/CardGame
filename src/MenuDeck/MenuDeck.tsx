@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DeckViewer } from "../DeckViewer/DeckViewer"
 import { EventViewer } from "../EventViewer/EventViewer";
 import { useGameContext } from "../Game/Game";
+import { Link } from "react-router-dom";
 
 
 export const MenuDeck = () => {
@@ -14,6 +15,9 @@ export const MenuDeck = () => {
         <div>
             <div className="absolute top-0 right-0">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => {setEventViewerIsVisible(true)}}>EventList</button>
+                <Link to="/">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Menu</button>
+                </Link>
             </div>
             {
                 deckViewer ? 
