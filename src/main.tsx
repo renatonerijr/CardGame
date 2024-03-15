@@ -8,6 +8,7 @@ import Hand from './Hand/Hand.tsx'
 import Deck from './Deck/Deck.tsx'
 import Discard from './Discard/Discard.tsx'
 import Board from './Board/Board.tsx'
+import { TurnController } from './TurnController/TurnController.tsx';
 import { MenuDeck } from './MenuDeck/MenuDeck.tsx';
 import { Commander } from './Commander/Commander.tsx'
 import { DeckBuilder } from './DeckBuilder/DeckBuilder.tsx';
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
               <Discard />
               <Deck />
               <Commander />
+              <TurnController />
             </Board>
             <Hand />
         </div>

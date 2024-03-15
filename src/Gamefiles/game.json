@@ -14,7 +14,6 @@
     "stages": [
         {"name": "BUY STAGE", "effects": {"draw_card": true}},
         {"name": "PLACE STAGE", "effects": {"place_cards": true}},
-        {"name": "ATTACK STAGE", "effects": {"use_actions": true}},
-        {"name": "REDIRECT ABILITIES", "effects": {"redirect_abilities": true}}
+        {"name": "ATTACK STAGE", "effects": {"use_actions": true}}
     ]
 }

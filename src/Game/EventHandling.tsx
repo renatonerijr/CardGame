@@ -13,6 +13,7 @@ export const EventHandling = (gameLogic: any) => {
 
     useEffect(() => {
         let last_event = eventList[eventList.length-1]
+
         if (!last_event || !gameLogic) {
             return
         }
