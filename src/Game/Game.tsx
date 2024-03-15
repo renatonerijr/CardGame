@@ -1,92 +1,66 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { flushSync } from 'react-dom';
-import AvailableCards from '../Gamefiles/cards.json';
 import GameRules from '../Gamefiles/game.json';
+import { RunGameSession } from "./GameSession";
+import { BoardRow } from '../Board/Board'
+import { EventHandling } from "./EventHandling";
 const GameContext = createContext<any>({});
 
+interface Event {
+    type: string
+    center_board?: object
+    left_board?: object
+    right_board?: object
+    board_selected?: object
+    card_in_board?: object
+    index_row?: number
+    selected_card?: object
+    ad_life?: number
+    rem_life?: number
+}
+
+
+interface EventObject {
+    type: string
+    gameLogic: Object,
+    center_board?: any
+    left_board?: any
+    right_board?: any
+    card?: any
+    board_selected?: any
+    card_in_board?: any
+    index_row?: number
+    selected_card?: any
+    ad_life?: number
+    rem_life?: number
+}
 
 export const GameProvider = ({ children }) => {
-    const [eventList, setEventList] = useState([])
+    
+    const [eventList, setEventList] = useState<EventObject[]>([])
     const [selectedCard, setSelectedCard] = useState({})
+    const game_session_id = RunGameSession()
 
     const [centerBoard, setCenterBoard] = useState([...GameRules.boards.center])
     const [leftBoard, setLeftBoard] = useState([...GameRules.boards.left])
     const [rightBoard, setRightBoard] = useState([...GameRules.boards.right])
 
-    const [hand, setHand] = useState([]);
     const activeDeckParsed = JSON.parse(sessionStorage.getItem("active_deck"))
-    const [deck, setDeck] = useState(activeDeckParsed);
+    const [deck, setDeck] = useState<any[]>(activeDeckParsed);
 
+    const [hand, setHand] = useState<any[]>([]);
+    const [discard, setDiscard] = useState<any[]>([])
+
+    const [showDiscard, setShowDiscard] = useState(false)
+
+    const [discardViewer, setDiscardViewer] = useState(false)
     const [deckViewer, setDeckViewer] = useState(false)
 
     const [life, setLife] = useState(20)
-    const deleteByIndex = (arr, index) => arr.filter((_, i) => i !== index);
 
-    useEffect(() => {
-        let last_event = eventList[eventList.length-1]
-        if (!last_event || !gameLogic) {
-            return
-        }
-
-        if (last_event["type"] == "draw_card") {
-            let cardDraw = deck.shift()
-            setDeck([...deck])
-            setHand([...hand, cardDraw])
-        }
-
-        if (last_event["type"] == "shuffle_deck") {
-            setDeck(deck.sort((_, __) => 0.5 - Math.random()))
-        }
-
-        if (last_event["type"] == "add_life") {
-            setLife(life + last_event["ad_life"])
-        }
-
-        if (last_event["type"] == "remove_life") {
-            setLife(life - last_event["rem_life"])
-        }
-
-        if (last_event["type"] == "place_energy") {
-            let card_in_board = last_event['card_in_board']
-            let board_selected = last_event['board_selected']
-            let index_row = last_event['index_row']
-            card_in_board['energy_slot'] = [...card_in_board['energy_slot'], selectedCard]
-            last_event["center_board"][board_selected].slots[index_row] = card_in_board
-
-            setCenterBoard(last_event["center_board"])
-            setSelectedCard({})
-            setHand(deleteByIndex(hand, last_event['selected_card']))
-        }
-
-        if (last_event["type"] == "place_card") {
-            let board_selected = last_event['board_selected']
-            let index_row = last_event['index_row']
-            if (last_event['center_board']){
-                last_event['center_board'][board_selected]["slots"][index_row] = selectedCard
-                setCenterBoard(last_event['center_board'])
-            } 
-            if (last_event['right_board']) {
-                last_event['right_board'][board_selected]["slots"][index_row] = selectedCard
-                setRightBoard(last_event['right_board'])
-            }
-            if (last_event['left_board']) {
-                last_event['left_board'][board_selected]["slots"][index_row] = selectedCard
-                setLeftBoard(last_event['left_board'])
-            }
-            console.log(last_event['center_board'])
-            console.log(last_event['right_board'])
-            console.log(last_event['left_board'])
-
-            setSelectedCard({})
-            setHand(deleteByIndex(hand, last_event['selected_card']))
-        }
-
-    }, [eventList])
-
-    const addToEventList = (eventObject) => {
+    const addToEventList = (eventObject: Event) => {
         try {
             setEventList(
-                [...eventList, {...eventObject, 
+                [...eventList, {...eventObject,
                     "gameLogic": JSON.stringify({
                         "deck": deck,
                         "hand": hand,
@@ -113,8 +87,7 @@ export const GameProvider = ({ children }) => {
         addToEventList({"type": "shuffle_deck"})
     }
 
-    const placeCard = (board_row: object, index_row: number) => {
-
+    const placeCard = (board_row: BoardRow, index_row: number) => {
         if(hand.length <= 0) {
             throw Error('NO CARDS AT HAND')
         }
@@ -171,6 +144,21 @@ export const GameProvider = ({ children }) => {
         addToEventList({"type": "remove_life", "rem_life": rem_life})
     }
 
+    const discardCard = (board_row: BoardRow, index_row: number) => {
+        if (board_row.side == "center") {
+            let board_selected = centerBoard.findIndex((v) => {return v === board_row})
+            addToEventList({"type": "discard_card", "center_board": centerBoard, "card": centerBoard[board_selected]["slots"][index_row], "board_selected": board_selected, "index_row": index_row})
+        } 
+        if (board_row.side == "left") {
+            let board_selected = leftBoard.findIndex((v) => {return v === board_row})
+            addToEventList({"type": "discard_card", "left_board": leftBoard, "board_selected": board_selected, "card": leftBoard[board_selected]["slots"][index_row], "index_row": index_row})
+        }
+        if (board_row.side == "right") {
+            let board_selected = rightBoard.findIndex((v) => {return v === board_row})
+            addToEventList({"type": "discard_card", "right_board": rightBoard,  "card": rightBoard[board_selected]["slots"][index_row], "board_selected": board_selected, "index_row": index_row})
+        }
+    }
+
     const setToEventList = (index) => {
         let gmlogic = JSON.parse(eventList[index]['gameLogic'])
         setHand(gmlogic['hand'])
@@ -193,12 +181,21 @@ export const GameProvider = ({ children }) => {
             deckViewer: deckViewer,
             setDeckViewer: setDeckViewer
         },
+        discard: {
+            discard: discard,
+            setDiscard: setDiscard,
+            discardViewer: discardViewer,
+            setDiscardViewer: setDiscardViewer,
+            showDiscard: showDiscard,
+            setShowDiscard: setShowDiscard
+        },
         selectedCard: {
             selectedCard: selectedCard,
             setSelectedCard: setSelectedCard
         },
         life: {
             life: life,
+            setLife: setLife,
             addLife: addLife,
             removeLife: removeLife
         },
@@ -206,15 +203,21 @@ export const GameProvider = ({ children }) => {
             centerBoard: centerBoard,
             leftBoard: leftBoard,
             rightBoard: rightBoard,
+            setCenterBoard: setCenterBoard,
+            setLeftBoard: setLeftBoard,
+            setRightBoard: setRightBoard
         },
         shuffleCards: shuffleCards,
         drawCard: drawCard,
         placeCard: placeCard,
+        discardCard: discardCard,
         eventList: {
             eventList: eventList,
             setToEventList: setToEventList
         }
     }
+
+    EventHandling(gameLogic)
 
     return (
         <GameContext.Provider value={{ gameLogic }}>

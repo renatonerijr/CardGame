@@ -12,6 +12,8 @@ import { MenuDeck } from './MenuDeck/MenuDeck.tsx';
 import { Commander } from './Commander/Commander.tsx'
 import { DeckBuilder } from './DeckBuilder/DeckBuilder.tsx';
 import { StartMenu } from './StartMenu/StartMenu.tsx';
+import { DoubleSession } from './DoubleSession/DoubleSession.tsx';
+
 import GameProvider from './Game/Game.tsx'
 
 
@@ -45,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <StartMenu />
+  },
+  {
+    path: "/double-session",
+    element: <DoubleSession />
   }
 ]);
 

@@ -20,6 +20,7 @@ export const DeckBuilder = () => {
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded mb-4" >Menu</button>
                 </Link>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded mb-4" onClick={() => {sessionStorage.setItem("active_deck", JSON.stringify(activeDeck))}}>Salvar Deck</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded mb-4" onClick={() => { setActiveDeck([]); sessionStorage.setItem("active_deck", JSON.stringify('[]'))}}>Limpar Deck</button>
             </div>
             <div className='w-screen h-full flex flex-row'>
                 <div className='w-6/12 h-6/12 bg-slate-800'>

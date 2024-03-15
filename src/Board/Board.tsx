@@ -3,7 +3,7 @@ import { useGameContext } from '../Game/Game';
 import { useState } from 'react';
 import Card from '../Hand/Hand';
 
-interface BoardRow {
+export interface BoardRow {
     id: string
     name: string
     size: number
@@ -15,6 +15,7 @@ interface BoardRow {
 
 export const CardBoard = (props) => {
     const item = props.row;
+
     return (
         <div
             className="p-6 w-44 h-64 mx-0 bg-slate-400 rounded-xl shadow-lg flex flex-col"
@@ -50,9 +51,8 @@ export const CardBoard = (props) => {
 
 const BoardField = (row: BoardRow) => {
     row = row.row
-    console.log(row.side)
-
     const { gameLogic } = useGameContext();
+    const { showDiscard } = gameLogic.discard
     let rowSide = row.side != "center" ? "flex-col" : "flex-row"
     let rowCSS = "flex justify-center space-x-0 m-2 " +  rowSide
     return (
@@ -61,13 +61,20 @@ const BoardField = (row: BoardRow) => {
             <div className={rowCSS}>
                 {
                     Array.from({ length: row.size }, (_, index) => (
-                            <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-xl border-2 w-44 h-64 border-black">
-                                {
-                                    row.slots[index] != undefined ? 
-                                    (   
-                                        <CardBoard key={row.slots[index]["id"] + index} row={row.slots[index]}></CardBoard>
-                                    ) : (<></>)
+                            <div>
+                                 {                              
+                                    showDiscard ? (
+                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-44 border border-blue-700 rounded" onClick={() => {gameLogic.discardCard(row, index)}}>Discard card</button>
+                                    ) : <></>
                                 }
+                                <div onClick={() => {gameLogic.placeCard(row, index)}} className="rounded-xl border-2 w-44 h-64 border-black">
+                                    {
+                                        row.slots[index] != undefined ? 
+                                        ( 
+                                            <CardBoard key={row.slots[index]["id"] + index} row={row.slots[index]}></CardBoard>
+                                        ) : (<></>)
+                                    }
+                                </div>
                             </div>
                     ))
                 }
