@@ -38,7 +38,7 @@ export const GameProvider = ({ children }) => {
     
     const [eventList, setEventList] = useState<EventObject[]>([])
     const [selectedCard, setSelectedCard] = useState({})
-    const game_session_id = RunGameSession()
+    const [game_session_id, is_odd] = RunGameSession()
 
     const [centerBoard, setCenterBoard] = useState([...GameRules.boards.center])
     const [leftBoard, setLeftBoard] = useState([...GameRules.boards.left])
@@ -171,6 +171,8 @@ export const GameProvider = ({ children }) => {
     }
 
     let gameLogic = {
+        game_session_id: game_session_id,
+        is_odd: is_odd,
         hand: {
             hand: hand, 
             setHand: setHand

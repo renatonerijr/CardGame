@@ -9,7 +9,7 @@ export const DoubleSession = () => {
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded w-full mb-4" >Menu</button>
                 </Link>
                 <Link to="/">
-                    <button onClick={() => {localStorage.setItem('game_sessions', '[]')}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded w-full">Limpar sessões</button>
+                    <button onClick={() => {localStorage.setItem('game_sessions', '[]');localStorage.setItem('round', '0')}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 border border-blue-700 rounded w-full">Limpar sessões</button>
                 </Link>
             </div>
         </div>

@@ -1,11 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameContext } from '../Game/Game';
 
 
 export const TurnController = () => {
     const { gameLogic } = useGameContext();
-    const [turn, setTurn] = useState<any>(0);
-    const [isOdd, setIsOdd] = useState<any>(turn);
+    const [turn, setTurn] = useState<any>(Number(localStorage.getItem('round')));
+
+    useEffect(() => {
+
+    }, )
+    const is_turn_even = turn % 2 === 0;
+    let my_turn = false;
+    
+    if (is_turn_even) {
+        my_turn = !gameLogic.is_odd;
+    } else {
+        my_turn = gameLogic.is_odd;
+    }
+
+    useEffect(() => {
+        window.addEventListener('storage', storageEventHandler, false);
+    }, [turn]);
+
+    function storageEventHandler() {
+        setTurn(Number(localStorage.getItem('round')))
+    }
+
+    console.log("TURNO É", turn)
+    console.log("EU SOU ODD?", gameLogic.is_odd)
+    console.log("O TURNO É EVEN?", is_turn_even)
+    console.log("É MEU TURNO?", my_turn)
 
     const disabledBttn = "pointer-events-none w-full text-black font-bold py-2 px-4 border rounded hover:bg-slate-700 border-slate-700 bg-slate-700"
     const enabledBttn = "bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
@@ -18,8 +42,11 @@ export const TurnController = () => {
                 </p>
             </div>
             <div className="w-full flex-row mt-2 space-x-2 flex">
-                <button className={isOdd ? enabledBttn : disabledBttn} onClick={() => {setTurn(turn+1)}}>
-                    {isOdd ? "END TURN" : "WAITING"}
+                <button className={my_turn ? enabledBttn : disabledBttn} onClick={() => {
+                    localStorage.setItem('round', turn+1)
+                    setTurn(turn+1)
+                }}>
+                    {my_turn ? "END TURN" : "WAITING"}
                 </button>
             </div>
         </div>
