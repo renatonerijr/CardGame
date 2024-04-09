@@ -83,7 +83,7 @@ const BoardField = (row: BoardRow) => {
     )
 }
 
-const Board = ({ children }) => {
+const Board = ({ leftChildren, rightChildren }) => {
     const { gameLogic } = useGameContext();
     const { centerBoard, leftBoard, rightBoard} = gameLogic.boards;
     
@@ -92,7 +92,7 @@ const Board = ({ children }) => {
 
             <div className="flex justify-center flex-row">
                 <div className="flex flex-col m-2 space-y-10">
-                    {children}
+                    {leftChildren}
                 </div>
                 <div className="flex flex-col flex-grow m-5">
                         {
@@ -114,6 +114,9 @@ const Board = ({ children }) => {
                                 <BoardField key={row.id} row={row}></BoardField>
                             ))
                         }
+                </div>
+                <div className="flex flex-col m-2 mt-20 space-y-10">
+                    {rightChildren}
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
+  Link,
   RouterProvider,
 } from "react-router-dom";
 import Hand from './Hand/Hand.tsx'
@@ -31,11 +32,23 @@ const router = createBrowserRouter([
       <GameProvider>
         <div className='w-screen h-screen'>
             <MenuDeck />
-            <Board>
-              <Discard />
-              <Deck />
-              <Commander />
-              <TurnController />
+            <Board
+              leftChildren={
+                <div>
+                  <Discard />
+                  <Deck />
+                  <Link to="/">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-96 mt-4 border border-blue-700 rounded w-full">Voltar menu</button>
+                  </Link>
+                </div>
+              }
+              rightChildren={
+                <div>
+                    <Commander />
+                    <TurnController />
+                </div>
+              }
+            >
             </Board>
             <Hand />
         </div>

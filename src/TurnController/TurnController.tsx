@@ -4,11 +4,10 @@ import { useGameContext } from '../Game/Game';
 
 export const TurnController = () => {
     const { gameLogic } = useGameContext();
+    const { life, setLife } = gameLogic.life
+    const [damage, setDamage] = useState(0); // State to store the value of the input field
     const [turn, setTurn] = useState<any>(Number(localStorage.getItem('round')));
 
-    useEffect(() => {
-
-    }, )
     const is_turn_even = turn % 2 === 0;
     let my_turn = false;
     
@@ -22,17 +21,24 @@ export const TurnController = () => {
         window.addEventListener('storage', storageEventHandler, false);
     }, [turn]);
 
-    function storageEventHandler() {
+    const storageEventHandler = () => {
         setTurn(Number(localStorage.getItem('round')))
+        let game_sessions: [] = JSON.parse(localStorage.getItem('game_sessions'))
+        const filteredSession = game_sessions.find(v => v['game_session_id'] == gameLogic.game_session_id);
+        console.log(filteredSession)
+        setLife(Number(filteredSession['life']))
     }
 
-    console.log("TURNO É", turn)
-    console.log("EU SOU ODD?", gameLogic.is_odd)
-    console.log("O TURNO É EVEN?", is_turn_even)
-    console.log("É MEU TURNO?", my_turn)
+    const giveDamage = () => {
+        let game_sessions: [] = JSON.parse(localStorage.getItem('game_sessions'))
+        const filteredSession = game_sessions.find(v => v['game_session_id'] != gameLogic.game_session_id);
+        filteredSession['life'] = filteredSession['life'] - damage
+        localStorage.setItem('game_sessions', JSON.stringify(game_sessions));
+    }
 
     const disabledBttn = "pointer-events-none w-full text-black font-bold py-2 px-4 border rounded hover:bg-slate-700 border-slate-700 bg-slate-700"
     const enabledBttn = "bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+
     return (
         <div>
             <div className="flex flex-col justify-center items-center">
@@ -48,6 +54,24 @@ export const TurnController = () => {
                 }}>
                     {my_turn ? "END TURN" : "WAITING"}
                 </button>
+            </div>
+            <div>
+                <div className="mb-4 mt-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" for="round">
+                        <p className='font-bold text-white bg-black w-full text-center mb-2 text-xl'>DANO DO ROUND:</p>
+                    </label>
+                    <input
+                        className="mb-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="round"
+                        type="number"
+                        placeholder="Dano do round"
+                        value={damage} // Bind input value to state
+                        onChange={(e) => setDamage(e.target.value)} // Update state on input change
+                    />
+                    <button className={my_turn ? enabledBttn : disabledBttn} onClick={() => {giveDamage()}} >
+                        DAR DANO
+                    </button>
+                </div>
             </div>
         </div>
     )

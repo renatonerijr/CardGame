@@ -12,7 +12,7 @@ export const RunGameSession = () => {
     let game_sessions = localStorage.getItem('game_sessions')
 
     if (!game_sessions) {
-        localStorage.setItem('game_sessions', JSON.stringify([{'game_session_id': game_session_id, 'is_odd': false}]))
+        localStorage.setItem('game_sessions', JSON.stringify([{'game_session_id': game_session_id, 'is_odd': false, 'life': 20}]))
     } else {
         let is_odd = false
         let game_session_parsed = JSON.parse(game_sessions)
@@ -26,7 +26,7 @@ export const RunGameSession = () => {
 
         if (!find_game){
             is_odd = game_session_parsed.length != 0
-            localStorage.setItem('game_sessions', JSON.stringify([...game_session_parsed, {'game_session_id': game_session_id, 'is_odd': is_odd}]))
+            localStorage.setItem('game_sessions', JSON.stringify([...game_session_parsed, {'game_session_id': game_session_id, 'is_odd': is_odd, 'life': 20}]))
         }
 
     }
